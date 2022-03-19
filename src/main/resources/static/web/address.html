@@ -275,6 +275,7 @@
 			});
 
 			function showAddressesList() {
+				$("#address-list").empty();
 				$.ajax({
 					url:"/addresses/",
 					type:"GET",
@@ -290,12 +291,13 @@
 										'<td>#{phone}</td>\n' +
 										'<td><a class="btn btn-xs btn-info"><span class="fa fa-edit"></span> 修改</a></td>\n' +
 										'<td><a class="btn btn-xs add-del btn-info"><span class="fa fa-trash-o"></span> 删除</a></td>\n' +
-										'<td><a class="btn btn-xs add-def btn-default">设为默认</a></td>\n' +
+										'<td><a onclick="setDefault(#{aid})" class="btn btn-xs add-def btn-default">设为默认</a></td>\n' +
 										'</tr>'
 								tr = tr.replace(/#{tag}/g, list[i].tag);
 								tr = tr.replace(/#{name}/g, list[i].name);
 								tr = tr.replace("#{phone}", list[i].phone);
 								tr = tr.replace("#{address}", list[i].address);
+								tr = tr.replace("#{aid}", list[i].aid)
 								$("#address-list").append(tr);
 							}
 							$(".add-def:eq(0)").hide();
@@ -305,7 +307,27 @@
 					}
 				});
 			}
+/*			$("#btn-").click(function () {
 
+			});*/
+			function setDefault(aid) {
+				$.ajax({
+					url:"/addresses/" + aid + "/set_default",
+					type:"POST",
+					dataType: "JSON",
+					success: function(json) {
+						if(json.state == 200) {
+							alert("Set default Successfully!");
+							showAddressesList();
+						} else {
+							alert("Set default  Failed!");
+						}
+					},
+					error: function (xhr) {
+						alert("Unknown error upon setting default  address!" + xhr.status);
+					}
+				});
+			}
 		</script>
 		<!--页脚结束-->
 	</body>

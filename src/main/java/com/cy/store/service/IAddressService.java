@@ -10,4 +10,5 @@ public interface IAddressService {
     List<Address> getByUid(Integer uid);
 
     void setDefaultAddress(Integer aid, Integer uid, String username);
+
 }

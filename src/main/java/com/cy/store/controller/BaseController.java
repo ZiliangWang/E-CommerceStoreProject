@@ -19,18 +19,20 @@ public class BaseController {
             result.setState(4000);
             result.setMessage("User name has been taken");
         } else if(e instanceof PasswordNotMatchException) {
-            result.setState(5002);
+            result.setState(4002);
             result.setMessage("Password does not match!");
         } else if(e instanceof UserNotFoundException) {
-            result.setState(5001);
+            result.setState(4001);
             result.setMessage("User data not found!");
         } else if(e instanceof InsertException) {
             result.setState(5000);
             result.setMessage("Unknown error occurred upon registering");
         } else if(e instanceof UpdateException) {
-            result.setState(5003);
+            result.setState(5001);
 //            result.setMessage("Unknown error occurred upon registering");
-        } else if (e instanceof FileEmptyException) {
+        } else if (e instanceof DeleteException) {
+            result.setState(5002);
+        }else if (e instanceof FileEmptyException) {
             result.setState(6000);
         } else if (e instanceof FileSizeException) {
             result.setState(6001);
@@ -43,7 +45,13 @@ public class BaseController {
         } else if (e instanceof AddressCountLimitException) {
             result.setState(4003);
             result.setMessage("User stored address is over limit!");
+        } else if (e instanceof AddressNotFoundException) {
+            result.setState(4004);
+        } else if (e instanceof AccessDeniedException) {
+            result.setState(4005);
         }
+
+
         return result;
     }
 
