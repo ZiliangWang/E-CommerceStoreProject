@@ -19,7 +19,10 @@
 		<link rel="stylesheet" type="text/css" href="../css/layout.css" />
 		<link rel="stylesheet" type="text/css" href="../css/top.css" />
 		<link rel="stylesheet" type="text/css" href="../css/footer.css" />
-		<script src="../js/adddel.js" type="text/javascript" charset="utf-8"></script>
+		<!--
+			<script type="text/javascript" src="../js/distpicker.data.js"></script>
+			<script type="text/javascript" src="../js/distpicker.js"></script>
+		-->
 	</head>
 
 	<body>
@@ -137,49 +140,66 @@
 						<li class="active"><a href="#">收货管理</a></li>
 					</ul>
 					<div class="panel-body">
-						<!--地址显示-->
-						<table class="table table-striped">
-							<caption>收货地址列表</caption>
-							<thead>
-								<tr>
-									<th>地址类型</th>
-									<th>收货人姓名</th>
-									<th>详细地址</th>
-									<th>联系电话</th>
-									<th colspan="3">操作</th>
-								</tr>
-							</thead>
-							<tbody id="address-list">
-								<tr>
-									<td>家</td>
-									<td>八戒</td>
-									<td>北京市房山区高老庄3排6号</td>
-									<td>1380***1234</td>
-									<td><a class="btn btn-xs btn-info"><span class="fa fa-edit"></span> 修改</a></td>
-									<td><a class="btn btn-xs add-del btn-info"><span class="fa fa-trash-o"></span> 删除</a></td>
-									<td><a class="btn btn-xs add-def btn-default">设为默认</a></td>
-								</tr>
-								<tr>
-									<td>公司</td>
-									<td>八戒</td>
-									<td>北京市海淀区中关村中路1号1001室</td>
-									<td>1380***1234</td>
-									<td><a class="btn btn-xs btn-info"><span class="fa fa-edit"></span> 修改</a></td>
-									<td><a class="btn btn-xs add-del btn-info"><span class="fa fa-trash-o"></span> 删除</a></td>
-									<td><a class="btn btn-xs add-def btn-default">设为默认</a></td>
-								</tr>
-								<tr>
-									<td>宿舍</td>
-									<td>八戒</td>
-									<td>北京市海淀区永丰镇30号</td>
-									<td>1380***1234</td>
-									<td><a class="btn btn-xs btn-info"><span class="fa fa-edit"></span> 修改</a></td>
-									<td><a class="btn btn-xs add-del btn-info"><span class="fa fa-trash-o"></span> 删除</a></td>
-									<td><a class="btn btn-xs add-def btn-default">设为默认</a></td>
-								</tr>
-							</tbody>
-						</table>
-						<a href="addAddress.html" class="btn btn-sm btn-primary"><span class="fa fa-plus"></span>新增收货地址</a>
+						<!--新增收货地址表单开始-->
+						<form id="form-add-new-address" class="form-horizontal" role="form">
+							<div class="form-group">
+								<label class="col-md-2 control-label"><span class="txtred">*</span>收货人：</label>
+								<div class="col-md-8">
+									<input name="name" type="text" class="form-control" placeholder="请输入收货人姓名">
+								</div>
+							</div>
+							<div class="address_content" data-toggle="distpicker">
+								<div class="form-group">
+									<label class="col-md-2 control-label"><span class="txtred">*</span>省/直辖市：</label>
+									<div class="col-md-3">
+										<select id="province-list" name="provinceCode" class="form-control" data-province="---- 选择省 ----"></select>
+									</div>
+									<label class="col-md-2 control-label"><span class="txtred">*</span>城市：</label>
+									<div class="col-md-3">
+										<select id="city-list" name="cityCode" class="form-control" data-city="---- 选择市 ----"></select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label"><span class="txtred">*</span>区县：</label>
+									<div class="col-md-3">
+										<select id="area-list" name="areaCode" class="form-control" data-district="---- 选择区 ----"></select>
+									</div>
+									<label class="col-md-2 control-label">邮政编码：</label>
+									<div class="col-md-3">
+										<input name="zip" type="text" class="form-control" placeholder="请输入邮政编码">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label"><span class="txtred">*</span>详细地址：</label>
+								<div class="col-md-8">
+									<textarea name="address" class="form-control" rows="3" placeholder="输入详细的收货地址，小区名称、门牌号等"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label"><span class="txtred">*</span>手机：</label>
+								<div class="col-md-3">
+									<input name="phone" type="text" class="form-control" placeholder="请输入手机号码">
+								</div>
+								<label class="col-md-2 control-label">固话：</label>
+								<div class="col-md-3">
+									<input name="tel" type="text" class="form-control" placeholder="请输入固定电话号码">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label">地址类型：</label>
+								<div class="col-md-8">
+									<input name="tag" type="text" class="form-control" placeholder="请输入地址类型，如：家、公司或者学校">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label"><a href="address.html">返回</a>&nbsp;&nbsp;&nbsp;</label>
+								<div class="col-sm-10">
+									<input id="btn-add-new-address" type="button" class="col-md-1 btn btn-primary" value="保存" />
+									<input type="reset" class="col-md-offset-1 col-md-1 btn btn-primary" value="重置" />
+								</div>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -269,86 +289,108 @@
 			</div>
 		</footer>
 		<script type="text/javascript">
+			let defaultOption = "<option value='0'> --Please Select--</option>"
+
 			$(document).ready(function() {
-				$("#address-list").empty();
-				showAddressesList();
+				showProvinceList();
+				$("#city-list").append(defaultOption);
+				$("#area-list").append(defaultOption);
+
 			});
 
-			function showAddressesList() {
-				$("#address-list").empty();
+			$("#province-list").change(function (){
+				let parent = $("#province-list").val();
+				$("#city-list").empty();
+				$("#area-list").empty();
+
+				$("#city-list").append(defaultOption);
+				$("#area-list").append(defaultOption);
+
+
+
 				$.ajax({
-					url:"/addresses/",
+					url:"/districts",
 					type:"GET",
+					data: "parent=" + parent ,
 					dataType: "JSON",
 					success: function(json) {
 						if(json.state == 200) {
 							let list = json.data;
 							for(let i = 0; i < list.length; i++) {
-								let tr = '<tr>\n' +
-										'<td>#{tag}</td>\n' +
-										'<td>#{name}</td>\n' +
-										'<td>#{address}</td>\n' +
-										'<td>#{phone}</td>\n' +
-										'<td><a class="btn btn-xs btn-info"><span class="fa fa-edit"></span> 修改</a></td>\n' +
-										'<td><a onclick="deleteByAid(#{aid})" class="btn btn-xs add-del btn-info"><span class="fa fa-trash-o"></span> 删除</a></td>\n' +
-										'<td><a onclick="setDefault(#{aid})" class="btn btn-xs add-def btn-default">设为默认</a></td>\n' +
-										'</tr>'
-								tr = tr.replace(/#{tag}/g, list[i].tag);
-								tr = tr.replace(/#{name}/g, list[i].name);
-								tr = tr.replace("#{phone}", list[i].phone);
-								tr = tr.replace("#{address}", list[i].address);
-								tr = tr.replaceAll("#{aid}", list[i].aid)
-								$("#address-list").append(tr);
+								let opt = "<option value='"+ list[i].code+"'> "+list[i].name+"</option>";
+								$("#city-list").append(opt)
 							}
-							$(".add-def:eq(0)").hide();
 						} else {
-							alert("Addresses data loading failed!");
+							alert("City data loading failed!");
 						}
 					}
 				});
-			}
-/*			$("#btn-").click(function () {
+			});
 
-			});*/
-			function setDefault(aid) {
-				$.ajax({
-					url:"/addresses/" + aid + "/set_default",
-					type:"GET",
-					dataType: "JSON",
-					success: function(json) {
-						if(json.state == 200) {
-							alert("Set default Successfully!");
-							showAddressesList();
-						} else {
-							alert("Set default Failed!");
-							showAddressesList();
-						}
-					},
-					error: function (xhr) {
-						alert("Unknown error upon setting default  address!" + xhr.status);
-					}
-				});
-			}
+			$("#city-list").change(function (){
+				let parent = $("#city-list").val();
+				$("#area-list").empty();
 
-			function deleteByAid(aid) {
+				$("#area-list").append(defaultOption);
 				$.ajax({
-					url:"/addresses/" + aid + "/delete",
+					url:"/districts",
 					type:"POST",
+					data: "parent=" + parent ,
 					dataType: "JSON",
 					success: function(json) {
 						if(json.state == 200) {
-							alert("Deletion Successfully!");
-							showAddressesList();
+							let list = json.data;
+							for(let i = 0; i < list.length; i++) {
+								let opt = "<option value='"+ list[i].code+"'> "+list[i].name+"</option>";
+								$("#area-list").append(opt)
+							}
 						} else {
-							alert("Deletion  Failed!");
-							showAddressesList();
+							alert("Area data loading failed!");
 						}
-					},
-					error: function (xhr) {
-						alert("Unknown error upon deleting default  address!" + xhr.status);
+					}
+				});
+			});
+
+			function showProvinceList() {
+				$.ajax({
+					url:"/districts",
+					type:"POST",
+					data: "parent=86",
+					dataType: "JSON",
+					success: function(json) {
+						if(json.state == 200) {
+							let list = json.data;
+							for(let i = 0; i < list.length; i++) {
+								let opt = "<option value='"+ list[i].code+"'> "+list[i].name+"</option>";
+								$("#province-list").append(opt)
+							}
+						} else {
+							alert("Province loading failed!");
+						}
 					}
 				});
 			}
+
+			$("#btn-add-new-address").click(function () {
+				$.ajax({
+					url:"/addresses/add_new_address",
+					type:"POST",
+					data: $("#form-add-new-address").serialize(),
+					dataType: "JSON",
+					success: function(json) {
+						if(json.state == 200) {
+							alert("Address stored Successfully!");
+						} else {
+							alert("Address creating Failed!");
+						}
+					},
+					error: function (xhr) {
+						alert("Unknown error upon adding address!" + xhr.status);
+					}
+				});
+			});
+
+
 		</script>
 		<!--页脚结束-->
 	</body>

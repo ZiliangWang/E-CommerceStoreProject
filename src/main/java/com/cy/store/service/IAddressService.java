@@ -11,4 +11,5 @@ public interface IAddressService {
 
     void setDefaultAddress(Integer aid, Integer uid, String username);
 
+    void delete(Integer aid, Integer uid, String username);
 }

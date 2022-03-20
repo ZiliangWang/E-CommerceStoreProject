@@ -103,4 +103,35 @@ public class AddressServiceImpl implements IAddressService {
 
     }
 
+    @Override
+    public void delete(Integer aid, Integer uid, String username) {
+        Address result = addressMapper.findByAid(aid);
+        if(result == null) {
+            throw new AddressNotFoundException("Address data is not exist!");
+        }
+
+        if(!result.getUid().equals(uid)) {
+            throw new AccessDeniedException("Illegal data access!");
+        }
+
+        Integer rows = addressMapper.deleteByAid(aid);
+
+        Integer count = addressMapper.countByUid(uid);
+        if (count == 0) {
+            return;
+        }
+
+        if(rows != 1) {
+            throw new DeleteException("Deletion failed!");
+        }
+
+        if(result.getIsDefault() == 1) {
+            Address newDefault = addressMapper.findLastModifiedAddress(uid);
+            rows = addressMapper.updateDefaultByAid(newDefault.getAid(), username, new Date());
+            if(rows != 1) {
+                throw new UpdateException("Reset new default address failed!");
+            }
+        }
+    }
+
 }
