@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -95,6 +96,20 @@ public class CartServiceImpl implements ICartService {
         if(rows != 1) {
             throw new UpdateException("Update cart number failed!");
         }
+    }
+
+    @Override
+    public List<CartVO> getCartVOByCids(Integer uid, Integer[] cids) {
+        List<CartVO> list = cartMapper.findVOByCids(cids);
+
+        Iterator<CartVO> it = list.iterator();
+        while(it.hasNext()) {
+            CartVO cartVO = it.next();
+            if(!cartVO.getUid().equals(uid)){
+                list.remove(cartVO);
+            }
+        }
+        return list;
     }
 
     private void checkEligibility(Integer cid, Integer uid) {

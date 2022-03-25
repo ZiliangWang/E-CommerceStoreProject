@@ -19,6 +19,8 @@ public class CartController extends BaseController{
     ICartService cartService;
     @RequestMapping("add_to_cart")
     public JsonResult<Void> addToCart(Integer pid, Integer amount, HttpSession session) {
+        System.out.println("pid=" + pid);
+        System.out.println("amount=" + amount);
         cartService.addToCart(getUidFromSession(session), pid, amount, getUsernameFromSession(session));
         return new JsonResult<>(OK);
     }
@@ -42,5 +44,11 @@ public class CartController extends BaseController{
     public JsonResult<Void> deleteCartItem(@PathVariable("cid") Integer cid, HttpSession session) {
         cartService.deleteCartItem(cid,getUidFromSession(session));
         return new JsonResult<>(OK);
+    }
+
+    @RequestMapping({"list"})
+    public JsonResult<List<CartVO>> getVOByCids(Integer[] cids, HttpSession session) {
+        List<CartVO> data = cartService.getCartVOByCids(getUidFromSession(session), cids);
+        return new JsonResult<>(OK, data);
     }
 }

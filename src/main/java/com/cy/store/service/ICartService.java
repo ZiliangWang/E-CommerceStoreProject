@@ -15,4 +15,6 @@ public interface ICartService {
 //    Integer addOneItem(Integer cid, Integer uid, String username);
 
     void deleteCartItem(Integer cid, Integer uid);
+
+    List<CartVO> getCartVOByCids(Integer uid, Integer[] cids);
 }
