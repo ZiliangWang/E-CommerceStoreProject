@@ -26,4 +26,6 @@ public interface AddressMapper {
     Integer deleteByAid(Integer aid);
 
     Address findLastModifiedAddress(Integer uid);
+
+
 }
