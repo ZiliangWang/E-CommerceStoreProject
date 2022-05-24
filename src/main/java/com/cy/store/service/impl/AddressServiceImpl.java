@@ -4,8 +4,7 @@ import com.cy.store.entity.Address;
 import com.cy.store.mapper.AddressMapper;
 import com.cy.store.service.IAddressService;
 import com.cy.store.service.IDistrictService;
-import com.cy.store.service.ex.AddressCountLimitException;
-import com.cy.store.service.ex.InsertException;
+import com.cy.store.service.ex.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -82,6 +81,80 @@ public class AddressServiceImpl implements IAddressService {
 
     @Override
     public void setDefaultAddress(Integer aid, Integer uid, String username) {
-        
+        Address result = addressMapper.findByAid(aid);
+        if(result == null) {
+            throw new AddressNotFoundException("Address data is not exist!");
+        }
+
+        if(!result.getUid().equals(uid)) {
+            throw new AccessDeniedException("Illegal data access!");
+        }
+        Integer rows = addressMapper.updateNonDefaultByUid(uid);
+
+        if (rows < 1) {
+            throw new UpdateException("Reset default failed!");
+        }
+
+        rows = addressMapper.updateDefaultByAid(aid, username, new Date());
+
+        if(rows != 1) {
+            throw new UpdateException("Set default failed!");
+        }
+
     }
+
+    @Override
+    public void delete(Integer aid, Integer uid, String username) {
+        Address result = addressMapper.findByAid(aid);
+        if(result == null) {
+            throw new AddressNotFoundException("Address data is not exist!");
+        }
+
+        if(!result.getUid().equals(uid)) {
+            throw new AccessDeniedException("Illegal data access!");
+        }
+
+        Integer rows = addressMapper.deleteByAid(aid);
+
+        Integer count = addressMapper.countByUid(uid);
+        if (count == 0) {
+            return;
+        }
+
+        if(rows != 1) {
+            throw new DeleteException("Deletion failed!");
+        }
+
+        if(result.getIsDefault() == 1) {
+            Address newDefault = addressMapper.findLastModifiedAddress(uid);
+            rows = addressMapper.updateDefaultByAid(newDefault.getAid(), username, new Date());
+            if(rows != 1) {
+                throw new UpdateException("Reset new default address failed!");
+            }
+        }
+    }
+
+    @Override
+    public Address getByAid(Integer uid, Integer aid) {
+        Address address = addressMapper.findByAid(aid);
+
+        if (address == null) {
+            throw new AddressNotFoundException("尝试访问的收货地址数据不存在");
+        }
+        if (!address.getUid().equals(uid)) {
+            throw new AccessDeniedException("非法访问");
+        }
+
+        address.setProvinceCode(null);
+        address.setCityCode(null);
+        address.setAreaCode(null);
+        address.setCreatedTime(null);
+        address.setCreatedUser(null);
+        address.setModifiedUser(null);
+        address.setModifiedTime(null);
+
+
+        return address;
+    }
+
 }
